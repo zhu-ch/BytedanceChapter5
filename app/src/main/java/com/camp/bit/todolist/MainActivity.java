@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.camp.bit.todolist.beans.Note;
+import com.camp.bit.todolist.beans.Priority;
 import com.camp.bit.todolist.beans.State;
 import com.camp.bit.todolist.db.TodoContract;
 import com.camp.bit.todolist.db.TodoDbHelper;
@@ -133,20 +134,28 @@ public class MainActivity extends AppCompatActivity {
                     new String[]{TodoContract.TodoEntry.COLUMN_CONTENT,
                             TodoContract.TodoEntry.COLUMN_DATE,
                             TodoContract.TodoEntry.COLUMN_STATE,
-                            TodoContract.TodoEntry._ID},
+                            TodoContract.TodoEntry._ID,
+                            TodoContract.TodoEntry.COLUMN_PRIORITY},
                     null, null, null, null,
-                    TodoContract.TodoEntry.COLUMN_DATE + " DESC");
+                    TodoContract.TodoEntry.COLUMN_STATE + " ASC, "+
+                            TodoContract.TodoEntry.COLUMN_PRIORITY + " DESC, "+
+                            TodoContract.TodoEntry.COLUMN_DATE + " ASC");
 
             while (cursor.moveToNext()) {
                 String content = cursor.getString(cursor.getColumnIndex(TodoContract.TodoEntry.COLUMN_CONTENT));
                 long dateInMs = cursor.getLong(cursor.getColumnIndex(TodoContract.TodoEntry.COLUMN_DATE));
                 int state = cursor.getInt(cursor.getColumnIndex(TodoContract.TodoEntry.COLUMN_STATE));
                 long id = cursor.getLong(cursor.getColumnIndex(TodoContract.TodoEntry._ID));
+                int priority = cursor.getInt(cursor.getColumnIndex(TodoContract.TodoEntry.COLUMN_PRIORITY));
+
+                //DEBUG
+                //content += String.valueOf(priority);
 
                 Note note = new Note(id);
                 note.setContent(content);
                 note.setDate(new Date(dateInMs));
                 note.setState(State.from(state));
+                note.setPriority(Priority.from(priority));
 
                 result.add(note);
             }

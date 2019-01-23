@@ -18,7 +18,7 @@ public final class TodoContract {
         public static final String COLUMN_DATE = "date";
         public static final String COLUMN_STATE = "state";
         public static final String COLUMN_CONTENT = "content";
-        public static final String COLUMN_URGENCY = "urgency";
+        public static final String COLUMN_PRIORITY = "urgency";
     }
 
     //建表
@@ -29,6 +29,7 @@ public final class TodoContract {
                     TodoEntry.COLUMN_DATE + " INTEGER," +
                     TodoEntry.COLUMN_STATE + " INTEGER," +
                     TodoEntry.COLUMN_CONTENT + " TEXT" +
+                    "," + TodoEntry.COLUMN_PRIORITY + " INTEGER" +
                     ")";
 
     //删表
@@ -38,5 +39,5 @@ public final class TodoContract {
     //更新
     //e.g. ALTER TABLE new_table ADD COLUMN sex Text;
     public static final String SQL_UPDATE =
-            "ALTER TABLE " + TodoEntry.TABLE_NAME + " ADD COLUMN " + TodoEntry.COLUMN_URGENCY + " INTEGER";
+            "ALTER TABLE " + TodoEntry.TABLE_NAME + " ADD COLUMN " + TodoEntry.COLUMN_PRIORITY + " INTEGER";
 }

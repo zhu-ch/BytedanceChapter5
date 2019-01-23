@@ -11,8 +11,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.camp.bit.todolist.beans.Priority;
 import com.camp.bit.todolist.beans.State;
 import com.camp.bit.todolist.db.TodoContract;
 import com.camp.bit.todolist.db.TodoDbHelper;
@@ -21,6 +23,8 @@ public class NoteActivity extends AppCompatActivity {
 
     private EditText editText;
     private Button addBtn;
+    private RadioButton commonBtn;
+    private RadioButton urgentBtn;
     TodoDbHelper mDbHelper;
     SQLiteDatabase db;
 
@@ -40,6 +44,8 @@ public class NoteActivity extends AppCompatActivity {
         }
 
         addBtn = findViewById(R.id.btn_add);
+        commonBtn = findViewById(R.id.common);
+        urgentBtn = findViewById(R.id.urgent);
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +54,11 @@ public class NoteActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(content)) {
                     Toast.makeText(NoteActivity.this,
                             "No content to add", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (commonBtn.isChecked() == false && urgentBtn.isChecked() == false) {
+                    Toast.makeText(NoteActivity.this,
+                            "Choose priority", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 boolean succeed = saveNote2Database(content.toString().trim());
@@ -82,6 +93,8 @@ public class NoteActivity extends AppCompatActivity {
         values.put(TodoContract.TodoEntry.COLUMN_DATE, System.currentTimeMillis());
         values.put(TodoContract.TodoEntry.COLUMN_STATE, State.TODO.intValue);
         values.put(TodoContract.TodoEntry.COLUMN_CONTENT, content);
+        values.put(TodoContract.TodoEntry.COLUMN_PRIORITY,
+                commonBtn.isChecked() ? Priority.COMMON.intValue : Priority.URGENT.intValue);
         long rowId = db.insert(TodoContract.TodoEntry.TABLE_NAME, null, values);
         return rowId != -1;
     }

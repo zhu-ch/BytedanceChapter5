@@ -16,11 +16,34 @@
         android:padding="4dp"
         android:textColor="#1e1e1e" />
 
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/radioGroup">
+
+        <RadioButton
+            android:id="@+id/common"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="common"
+            />
+
+        <RadioButton
+            android:id="@+id/urgent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="urgent"
+            />
+
+    </RadioGroup>
+
     <Button
         android:id="@+id/btn_add"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
         android:text="@string/confirm" />
+
+
 
 </LinearLayout>

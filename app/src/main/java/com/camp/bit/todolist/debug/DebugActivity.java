@@ -9,12 +9,16 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.camp.bit.todolist.R;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,6 +35,8 @@ public class DebugActivity extends AppCompatActivity {
 
         final Button printBtn = findViewById(R.id.btn_print_path);
         final TextView pathText = findViewById(R.id.text_path);
+        final EditText mInput =findViewById(R.id.input_text);
+
         printBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,7 +71,53 @@ public class DebugActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO 把一段文本写入某个存储区的文件中，再读出来，显示在 fileText 上
-                fileText.setText("TODO");
+
+                //写入
+                String folderName = "User";
+                File sdCardDir = new File(Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_DOWNLOADS), folderName);
+                if (!sdCardDir.exists()) {
+                    if (!sdCardDir.mkdirs()) {
+                        try {
+                            sdCardDir.createNewFile();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                try {
+                    //新建文件
+                    File saveFile = new File(sdCardDir, "user.txt");
+                    if (!saveFile.exists()) {
+                        saveFile.createNewFile();
+                    }
+                    final FileOutputStream outStream = new FileOutputStream(saveFile);
+                    String str = mInput.getText().toString().trim();
+                    try {
+                        outStream.write(str.getBytes());
+                        outStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(DebugActivity.this, "写入成功", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                //读取
+                BufferedReader bre = null;
+                String str = null;
+                try {
+                    fileText.setText("");
+                    String file = Environment.getExternalStoragePublicDirectory(
+                            Environment.DIRECTORY_DOWNLOADS) + "/User/user.txt";
+                    bre = new BufferedReader(new FileReader(file));//此时获取到的bre就是整个文件的缓存流
+                    while ((str = bre.readLine()) != null) { // 判断最后一行不存在，为空结束循环
+                        fileText.append(str+'\n');
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

@@ -32,6 +32,11 @@
                 android:layout_marginTop="10dp"
                 android:text="@string/request_storage_permission" />
 
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/input_text"/>
+
             <Button
                 android:id="@+id/btn_write_files"
                 android:layout_width="match_parent"

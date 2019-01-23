@@ -78,8 +78,12 @@ public class NoteActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mDbHelper.close();
-        mDbHelper = null;
+        try{
+            mDbHelper.close();
+            mDbHelper = null;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private boolean saveNote2Database(String content) {
